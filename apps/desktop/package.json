@@ -1,0 +1,42 @@
+{
+  "name": "@podgaze/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "node dev.mjs",
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "smoke": "node smoke.mjs"
+  },
+  "devDependencies": {
+    "@kubernetes/client-node": "^1.4.0",
+    "@podgaze/cluster": "workspace:*",
+    "@podgaze/contracts": "workspace:*",
+    "electron": "^37.3.1",
+    "electron-builder": "26.0.12",
+    "electron-updater": "6.6.2",
+    "esbuild": "^0.25.9",
+    "vitest": "^3.2.4",
+    "wait-on": "^8.0.4"
+  },
+  "productName": "Podgaze",
+  "description": "Desktop Kubernetes IDE for the clusters in your kubeconfig.",
+  "author": {
+    "name": "Vahe Stepanyan",
+    "email": "vahestepanyan17@gmail.com"
+  },
+  "homepage": "https://github.com/vahe17s/podgaze",
+  "dependencies": {
+    "@lydell/node-pty": "1.1.0"
+  },
+  "optionalDependencies": {
+    "@lydell/node-pty-linux-x64": "1.1.0",
+    "@lydell/node-pty-linux-arm64": "1.1.0",
+    "@lydell/node-pty-darwin-x64": "1.1.0",
+    "@lydell/node-pty-darwin-arm64": "1.1.0",
+    "@lydell/node-pty-win32-x64": "1.1.0",
+    "@lydell/node-pty-win32-arm64": "1.1.0"
+  }
+}

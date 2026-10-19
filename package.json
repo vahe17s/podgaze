@@ -1,0 +1,30 @@
+{
+  "name": "podgaze",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "test": "pnpm -r --if-present test",
+    "build": "pnpm --filter @podgaze/ui build && pnpm --filter @podgaze/desktop build",
+    "dist": "pnpm build && pnpm --filter @podgaze/desktop exec electron-builder --publish never",
+    "dist:linux": "pnpm build && pnpm --filter @podgaze/desktop exec electron-builder --linux --publish never"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": [
+        "current"
+      ],
+      "cpu": [
+        "x64",
+        "arm64"
+      ]
+    }
+  }
+}

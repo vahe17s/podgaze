@@ -1,0 +1,20 @@
+{
+  "name": "@podgaze/cluster",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^1.4.0",
+    "@podgaze/contracts": "workspace:*",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

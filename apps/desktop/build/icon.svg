@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- The Podgaze eye, from packages/ui/src/logo.tsx (32×32), scaled into the 824×824 safe area icons use. -->
+  <g transform="translate(100 100) scale(25.75)">
+    <rect width="32" height="32" rx="7.2" fill="#2f81f7"/>
+    <path d="M5.5 16.2c2.2-3.8 5.4-5.7 10.5-5.7s8.3 1.9 10.5 5.7c-2.2 3.8-5.4 5.7-10.5 5.7s-8.3-1.9-10.5-5.7z" fill="#fff"/>
+    <circle cx="16" cy="16.2" r="3.1" fill="#0d1117"/>
+    <circle cx="17.1" cy="15.2" r="1" fill="#fff"/>
+  </g>
+</svg>

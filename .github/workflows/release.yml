@@ -1,0 +1,73 @@
+name: Release
+
+# Push a tag like v0.1.0 (matching apps/desktop/package.json "version"). Each OS builds its installers, starts the
+# packaged app once to check it works, and attaches the files to a draft GitHub release to review and publish.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  installers:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            target: --linux
+          - os: macos-14
+            target: --mac
+          - os: windows-latest
+            target: --win
+    runs-on: ${{ matrix.os }}
+    env:
+      # Not code-signed yet; see the README for what that means on macOS and Windows.
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Tag matches the app version
+        shell: bash
+        run: |
+          version="$(node -p "require('./apps/desktop/package.json').version")"
+          if [ "${GITHUB_REF_NAME}" != "v${version}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match apps/desktop/package.json version ${version}"; exit 1
+          fi
+
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: Build installers
+        working-directory: apps/desktop
+        run: pnpm exec electron-builder ${{ matrix.target }} --publish never
+
+      - name: Start the packaged app once (Linux)
+        if: runner.os == 'Linux'
+        working-directory: apps/desktop
+        run: xvfb-run --auto-servernum node smoke.mjs
+      - name: Start the packaged app once (macOS, Windows)
+        if: runner.os != 'Linux'
+        working-directory: apps/desktop
+        run: node smoke.mjs
+
+      - name: Attach to the draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            apps/desktop/release/*.AppImage
+            apps/desktop/release/*.deb
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.exe
+            apps/desktop/release/*.blockmap
+            apps/desktop/release/latest*.yml

@@ -1,0 +1,82 @@
+# Installers for Podgaze. Run from apps/desktop after `pnpm build` at the repo root:
+#   pnpm exec electron-builder --linux     (AppImage + .deb)
+#   pnpm exec electron-builder --mac       (.dmg, on macOS)
+#   pnpm exec electron-builder --win       (.exe installer, on Windows)
+appId: io.github.vahe17s.podgaze
+productName: Podgaze
+executableName: podgaze
+copyright: Copyright © 2026 Vahe Stepanyan
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+
+directories:
+  output: release
+  buildResources: build
+
+# main.js bundles every library except the native pty one (dependencies in package.json), which ships unpacked
+# so its prebuilt binary can load.
+files:
+  - dist/**/*
+  - "!dist/**/*.map"
+  - renderer/**/*
+  - package.json
+asar: true
+asarUnpack:
+  - "**/node_modules/@lydell/**"
+
+linux:
+  target:
+    - AppImage
+    - deb
+  # One PNG per size, so menus and taskbars get a sharp icon.
+  icon: build/icons
+  category: Development
+  synopsis: Desktop Kubernetes IDE
+  description: Browse, edit, and operate the Kubernetes clusters in your kubeconfig.
+  maintainer: Vahe Stepanyan <vahestepanyan17@gmail.com>
+  desktop:
+    entry:
+      StartupWMClass: Podgaze
+      Keywords: kubernetes;k8s;kubectl;helm;
+
+deb:
+  # A bare minimum desktop: Electron's own runtime libraries.
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libuuid1
+    - libsecret-1-0
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+  icon: build/icon.png
+  category: public.app-category.developer-tools
+  # Not signed or notarized yet: macOS asks once before the first launch (see README).
+  identity: null
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: Podgaze
+
+publish:
+  provider: github
+  owner: vahe17s
+  repo: podgaze

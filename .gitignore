@@ -1,0 +1,15 @@
+.superpowers/
+node_modules/
+dist/
+apps/desktop/renderer/
+*.tsbuildinfo
+# Local package store, caches, and anything with secrets or logs
+.pnpm-store/
+coverage/
+*.log
+.env
+.env.*
+*.bak
+*.kubeconfig
+.DS_Store
+apps/desktop/release/
